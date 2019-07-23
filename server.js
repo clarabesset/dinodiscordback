@@ -40,7 +40,7 @@ app.use("/api/User", userAPI.router);
 
 // SOCKET
 io.on("connection", socket => {
-  console.log("user connected", Date.now());
+  console.log('user connected with socket id:', socket.id);
   const users = [];
   socket.on("room", connected => {
     users.push({ name: "yolo" });
@@ -49,12 +49,13 @@ io.on("connection", socket => {
   });
 
   socket.on("disconnect", () => {
+    players = [];
     console.log("user disconnected");
   });
 });
 
 let connectedPlayers = 0;
-const players = [];
+let players = [];
 
 io.of("/room").on("connection", function(socket) {
   connectedPlayers += 1;
