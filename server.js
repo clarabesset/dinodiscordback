@@ -47,15 +47,30 @@ io.on("connection", socket => {
     console.log("room created", connected);
     console.log(users);
   });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
 });
+
 let connectedPlayers = 0;
+const players = [];
+
 io.of("/room").on("connection", function(socket) {
   connectedPlayers += 1;
+
   console.log(connectedPlayers);
   socket.emit("aloha");
+
+  socket.on("player-join", color => {
+    if (players.length < 2) players.push({ color, nb: players.length + 1 });
+
+    console.log("-----PLAYERS SETUp-----");
+    console.log(players);
+
+    socket.emit("confirm-player-join", players);
+  });
+
   socket.on("message", data => {
     console.log(data);
     socket.broadcast.emit("message", data);
