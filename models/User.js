@@ -4,7 +4,7 @@ const userSchema = new Schema({
   username: { type: String, require: true, unique: true },
   email: { type: String, require: true, unique: true },
   password: { type: String, require: true },
-  score: { Number, default: 0 },
+  score: { type: Number, default: 0 },
   avatar: { type: String, enum: ["img1", "img2"], default: "img1" }
 });
 const userModel = mongoose.model("User", userSchema);
