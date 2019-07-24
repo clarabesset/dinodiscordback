@@ -21,27 +21,32 @@ module.exports = function(server) {
 		});
 	});
 
-	let connectedPlayers = 0;
 	let players = [];
 
 	io.of('/room').on('connection', function(socket) {
-		connectedPlayers += 1;
 
-		socket.on('player-join', (color) => {
-			if (players.length < 2) players.push({ color, nb: players.length + 1 });
+		socket.on('player-join', (color, id) => {
 
-			console.log('-----PLAYERS SETUp-----');
-			console.log(players);
+            /// TODO +> PASS ID HERE !!!!!
 
-			socket.emit('confirm-player-join', players);
+            if (players.length < 2) players.push({ color, nb: players.length + 1 });
+            
+            socket.emit('confirm-player-join', players);
+
+            socket.broadcast.emit('remove-one-dino', color);           
         });
         
         socket.on("generate-grid", () => {
-            console.log("gimme a grid poto")
             const gridModel = utils.generateGrid(players);
-            console.log(gridModel);
-
-            socket.emit("set-grid-model", gridModel);
+            // const playerPosition = utils.setPlayerPositionInGrid(player, cellNumber);
+            // console.log(gridModel);
+            console.log("on est chauds bouillants alleezzz");
+            
+            // socket.emit("set-grid-model", gridModel);
+            socket.emit('ready-to-play', {gridModel, players});
+            socket.broadcast.emit('ready-to-play', {gridModel, players});
+            // socket.emit("set-grid-model", {gridModel, playerPosition});
+            
         })
 	});
 };

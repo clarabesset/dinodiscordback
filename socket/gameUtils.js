@@ -29,7 +29,7 @@ function generateGrid(players) {
 					y: j,
 					nb: count,
 					taken: true,
-					color: player.color,
+					color: players.color,
 					player: player,
 					meteorite: false
 				});
@@ -139,5 +139,7 @@ movePlayer = (direction, playerNumber) => {
 
 
 module.exports = {
-	generateGrid
+	generateGrid,
+	setPlayerPositionInGrid
+	
 }

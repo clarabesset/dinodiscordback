@@ -14,7 +14,7 @@ const server = http.createServer(app);
 app.use(
   cors({
     credentials: true,
-    origin: process.env.Front_End_Url
+    origin: [process.env.Front_End_Url, "http://10.150.98.211:3000/", ]
   })
 );
 
