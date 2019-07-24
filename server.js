@@ -7,10 +7,9 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 const app = express();
-const socketIO = require("socket.io");
 const http = require("http");
 const server = http.createServer(app);
-const io = socketIO(server);
+
 
 app.use(
   cors({
@@ -38,37 +37,9 @@ app.use(auth);
 const userAPI = require("./api/User");
 app.use("/api/User", userAPI.router);
 
-// SOCKET
-io.on("connection", socket => {
-  console.log('user connected with socket id:', socket.id);
-  const users = [];
-  socket.on("room", connected => {
-    users.push({ name: "yolo" });
-    console.log("room created", connected);
-    console.log(users);
-  });
 
-  socket.on("disconnect", () => {
-    players = [];
-    console.log("user disconnected");
-  });
-});
+require("./socket/listeners")(server);
 
-let connectedPlayers = 0;
-let players = [];
-
-io.of("/room").on("connection", function(socket) {
-  connectedPlayers += 1;
-
-  socket.on("player-join", color => {
-    if (players.length < 2) players.push({ color, nb: players.length + 1 });
-
-    console.log("-----PLAYERS SETUp-----");
-    console.log(players);
-
-    socket.emit("confirm-player-join", players);
-  });
-});
 server.listen(process.env.PORT, () => {
   console.log("App hosted on: ", process.env.SITE_URL);
 });
