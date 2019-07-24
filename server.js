@@ -3,12 +3,14 @@ require("./config/dbconnection");
 require("./config/passport");
 const cors = require("cors");
 const express = require("express");
+const http = require("http");
+const app = express();
+const server = http.createServer(app);
+// const socketIO = require("socket.io");
+const io = require('socket.io').listen(server);
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
-const app = express();
-const http = require("http");
-const server = http.createServer(app);
 
 
 app.use(
@@ -38,7 +40,7 @@ const userAPI = require("./api/User");
 app.use("/api/User", userAPI.router);
 
 
-require("./socket/listeners")(server);
+require("./socket/listeners")(io);
 
 server.listen(process.env.PORT, () => {
   console.log("App hosted on: ", process.env.SITE_URL);

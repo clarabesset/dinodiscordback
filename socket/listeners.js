@@ -1,8 +1,9 @@
-module.exports = function(server) {
+module.exports = function(io) {
 
-    const socketIO = require("socket.io");
-	const io = socketIO(server);
+   
     const utils = require('./gameUtils');
+
+    console.log("C ICIIIIIIIIIIIIIIII",)
     
 
 	// SOCKET
@@ -21,15 +22,18 @@ module.exports = function(server) {
 		});
 	});
 
-	let players = [];
+    let players = [];
 
 	io.of('/room').on('connection', function(socket) {
 
-		socket.on('player-join', (color, id) => {
+		socket.on('player-join', (payload) => {
 
-            /// TODO +> PASS ID HERE !!!!!
+            const { userInfos, color} = payload;
 
-            if (players.length < 2) players.push({ color, nb: players.length + 1 });
+            console.log("player join ???");
+            console.log(userInfos);
+
+            if (players.length < 2) players.push({ color, id: userInfos._id, details: userInfos  });
             
             socket.emit('confirm-player-join', players);
 
@@ -38,15 +42,24 @@ module.exports = function(server) {
         
         socket.on("generate-grid", () => {
             const gridModel = utils.generateGrid(players);
-            // const playerPosition = utils.setPlayerPositionInGrid(player, cellNumber);
-            // console.log(gridModel);
-            console.log("on est chauds bouillants alleezzz");
+            // const playerMove = utils.movePlayer(direction, playerId);
             
             // socket.emit("set-grid-model", gridModel);
             socket.emit('ready-to-play', {gridModel, players});
             socket.broadcast.emit('ready-to-play', {gridModel, players});
+            // socket.emit('player-move', {direction, playerId});
+            // socket.broadcast.emit('player-move', {direction, playerId});
             // socket.emit("set-grid-model", {gridModel, playerPosition});
             
+        })
+
+        socket.on("player-move", (payload) => {
+            const { direction, playerId } = payload;
+            console.log("player-move payload", payload);
+            const updatedGrid = utils.movePlayer(direction, playerId);
+            // console.log(players.playerId)
+           socket.emit("update-grid", updatedGrid);
+           socket.broadcast.emit("update-grid", updatedGrid);
         })
 	});
 };
