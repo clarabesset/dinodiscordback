@@ -194,10 +194,14 @@ module.exports = (function() {
 		const results =  { // here, this represents results
 			1: calcPoints(players[0]),
 			2: calcPoints(players[1]),
-			winner: this[1] > this[2] ? 1 : 2 ,
-/* 			winnerColor: players[this.winner - 1].color
- */		};
+		
+ 			
+		 };
 
+		 results.winner = results[1] > results[2] ? 1 : 2;
+		results.winnerColor= players[results.winner - 1].color;
+		 console.log("-----players ???----");
+		 console.log(players)
 		console.log("-----results ???----");
 		console.log(results);
 		console.log("---------");
