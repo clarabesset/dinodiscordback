@@ -190,12 +190,9 @@ module.exports = (function() {
 				return acc;
 			}, 0);
 		}
-
 		const results =  { // here, this represents results
 			1: calcPoints(players[0]),
 			2: calcPoints(players[1]),
-		
- 			
 		 };
 
 		 results.winner = results[1] > results[2] ? 1 : 2;
