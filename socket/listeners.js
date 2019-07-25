@@ -57,6 +57,7 @@ module.exports = function(io) {
             const { direction, playerId } = payload;
             console.log("player-move payload", payload);
             const updatedGrid = utils.movePlayer(direction, playerId);
+            // console.log(players.playerId)
            socket.emit("update-grid", updatedGrid);
            socket.broadcast.emit("update-grid", updatedGrid);
         })

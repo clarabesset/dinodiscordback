@@ -1,4 +1,4 @@
-const sampleGrid = require("./sampleGrid")
+//const sampleGrid = require("./sampleGrid")
 
 module.exports = (function() {
 	currentGrid = [];
@@ -63,12 +63,12 @@ module.exports = (function() {
 		const bkp = closure(grid);
 		// console.log(bkp);
 		
-		// currentGrid = JSON.parse(JSON.stringify(grid));
+		 currentGrid = JSON.parse(JSON.stringify(grid));
 		// console.log("currentGrid WTF ++>" , currentGrid)
-		// return grid;
-		currentGrid = JSON.parse(JSON.stringify(sampleGrid));
+		 return grid;
+		// currentGrid = JSON.parse(JSON.stringify(sampleGrid));
 		// console.log("currentGrid WTF ++>" , sampleGrid)
-		return sampleGrid;
+		//return sampleGrid;
 	}
 	
 	function setPlayerPositionInGrid(player, cellNumber) {
@@ -90,7 +90,8 @@ module.exports = (function() {
 	
 	movePlayer = (direction, playerId) => {
 		console.log("c ici grosse morue",direction, playerId);
-		const currentGrid = [...sampleGrid];
+		// const currentGrid = [...sampleGrid];
+		//const currentGrid = [...grid];
 		console.log("grid length =>", currentGrid.length);
 		// console.log("grid backupée =========================> ");
 		// console.log(currentGrid);
