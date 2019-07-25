@@ -3,21 +3,21 @@
 module.exports = (function() {
 	currentGrid = [];
 	// players = []; // do not use
-	
+
 	function closure() {
 		var grid;
 		return function(g) {
 			if (!grid) {
-				grid  = [...g];
+				grid = [ ...g ];
 			}
 			return grid;
-		}
+		};
 	}
-	
+
 	function getRandomInt(min, max) {
 		return Math.floor(Math.random(min) * Math.floor(max));
 	}
-	
+
 	function get2RandCellIndexes() {
 		const indexes = []; // cases choisies au hasard
 		do {
@@ -26,7 +26,7 @@ module.exports = (function() {
 		} while (indexes.length !== 2); // 2 : nombres de météorites que l'on veut dès le départ
 		return indexes;
 	}
-	
+
 	function generateGrid(players) {
 		const grid = [];
 		const indexes = get2RandCellIndexes();
@@ -36,7 +36,7 @@ module.exports = (function() {
 				const pos = indexes.indexOf(count); // if not found => return -1
 				if (count === 0 || count === 99) {
 					// les cases où les joueurs doivent être placés
-					let player = count === 0 ? players[0] : players[1]
+					let player = count === 0 ? players[0] : players[1];
 					grid.push({
 						x: i,
 						y: j,
@@ -62,21 +62,21 @@ module.exports = (function() {
 		}
 		const bkp = closure(grid);
 		// console.log(bkp);
-		
-		 currentGrid = JSON.parse(JSON.stringify(grid));
+
+		currentGrid = JSON.parse(JSON.stringify(grid));
 		// console.log("currentGrid WTF ++>" , currentGrid)
-		 return grid;
+		return grid;
 		// currentGrid = JSON.parse(JSON.stringify(sampleGrid));
 		// console.log("currentGrid WTF ++>" , sampleGrid)
 		//return sampleGrid;
 	}
-	
+
 	function setPlayerPositionInGrid(player, cellNumber) {
 		const gridCopy = [ ...currentGrid ];
 		gridCopy[cellNumber].player = player;
 		currentGrid = gridCopy;
 	}
-	
+
 	// handleMovements = (e) => {
 	//   e.preventDefault();
 	//   const moves = {
@@ -87,12 +87,12 @@ module.exports = (function() {
 	//   };
 	//   movePlayer(moves[e.keyCode], 1);
 	// };
-	
+
 	movePlayer = (direction, playerId) => {
-		console.log("c ici grosse morue",direction, playerId);
+		console.log('c ici grosse morue', direction, playerId);
 		// const currentGrid = [...sampleGrid];
 		//const currentGrid = [...grid];
-		console.log("grid length =>", currentGrid.length);
+		console.log('grid length =>', currentGrid.length);
 		// console.log("grid backupée =========================> ");
 		// console.log(currentGrid);
 		// console.log('player ' + direction.playerId + ' moved ' + direction.direction);
@@ -100,14 +100,14 @@ module.exports = (function() {
 		const currentCell = currentGrid.filter((cell) => {
 			return cell.player && cell.player.id === playerId;
 		})[0];
-		console.log("------currentCell--------");
+		console.log('------currentCell--------');
 		console.log(currentCell);
-		console.log("--------------");
+		console.log('--------------');
 
 		const takenCell = currentGrid.filter((cell) => cell.taken === true);
-		console.log("------takenCell--------");
-		console.log("takenCell length", takenCell.length);
-		console.log("--------------");
+		console.log('------takenCell--------');
+		console.log('takenCell length', takenCell.length);
+		console.log('--------------');
 
 		const findNextCell = (currentCellNb, nextDirection) => {
 			const moves = {
@@ -117,7 +117,7 @@ module.exports = (function() {
 				left: -1
 			};
 
-			console.log("@FindNexCell --- currenCellNB", currentCellNb);
+			console.log('@FindNexCell --- currenCellNB', currentCellNb);
 
 			// if (true) {
 			for (let i = 0; i < takenCell.length; i++) {
@@ -163,11 +163,11 @@ module.exports = (function() {
 		const player = currentCell.player;
 		const nextCell = findNextCell(currentCell.nb, direction);
 		const previousCell = findPreviousCell(currentCell.nb, direction);
-		console.log("--------YATAAA ???---------------");
+		console.log('--------YATAAA ???---------------');
 		console.log('next cell', nextCell);
 		console.log('previous cell', previousCell);
-		console.log("-----------------------");
-	
+		console.log('-----------------------');
+
 		if (nextCell) {
 			// ----- reset current cell
 			currentGrid[currentCell.nb].player = null;
@@ -178,41 +178,40 @@ module.exports = (function() {
 			currentGrid[nextCell].taken = true;
 			currentGrid[nextCell].color = player.color;
 		}
-	
+
 		return currentGrid;
 	};
-	
+
 	countPoints = (players) => {
-		
 		function calcPoints(player) {
 			return currentGrid.reduce((acc, cell, index) => {
 				if (cell.color === player.color) acc += 1;
 				return acc;
 			}, 0);
 		}
-		const results =  { // here, this represents results
+		const results = {
+			// here, this represents results
 			1: calcPoints(players[0]),
-			2: calcPoints(players[1]),
-		 };
+			2: calcPoints(players[1])
+		};
 
-		 results.winner = results[1] > results[2] ? 1 : 2;
-		results.winnerColor= players[results.winner - 1].color;
-		 console.log("-----players ???----");
-		 console.log(players)
-		console.log("-----results ???----");
+		results.winner = results[1] > results[2] ? 1 : 2;
+		results.winnerColor = players[results.winner - 1].color;
+		console.log('-----players ???----');
+		console.log(players);
+		console.log('-----results ???----');
 		console.log(results);
-		console.log("---------");
+		console.log('---------');
 		// const playersCell = this.state.currentGrid.filter(cell => cell.color === player.color);
 		// var points = playersCell.length;
 		// console.log("points --->", points);
 		return results;
 	};
-	
-	
+
 	return {
 		generateGrid,
 		setPlayerPositionInGrid,
 		movePlayer,
 		countPoints
-	}
-}())
+	};
+})();
