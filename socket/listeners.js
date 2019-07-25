@@ -2,23 +2,21 @@ module.exports = function(io) {
 
    
     const utils = require('./gameUtils');
-
-    console.log("C ICIIIIIIIIIIIIIIII",)
     
 
 	// SOCKET
 	io.on('connection', (socket) => {
-		console.log('user connected with socket id:', socket.id);
+		// console.log('user connected with socket id:', socket.id);
 		const users = [];
 		socket.on('room', (connected) => {
 			users.push({ name: 'yolo' });
-			console.log('room created', connected);
-			console.log(users);
+			// console.log('room created', connected);
+			// console.log(users);
 		});
 
 		socket.on('disconnect', () => {
 			players = [];
-			console.log('user disconnected');
+			// console.log('user disconnected');
 		});
 	});
 
@@ -30,10 +28,10 @@ module.exports = function(io) {
 
             const { userInfos, color} = payload;
 
-            console.log("player join ???");
-            console.log(userInfos);
+            // console.log("player join ???");
+            // console.log(userInfos);
 
-            if (players.length < 2) players.push({ color, id: userInfos._id, details: userInfos  });
+            if (players.length < 2) players.push({ color, id: userInfos._id, details: userInfos, nb:players.length+1  });
             
             socket.emit('confirm-player-join', players);
 
@@ -55,11 +53,18 @@ module.exports = function(io) {
 
         socket.on("player-move", (payload) => {
             const { direction, playerId } = payload;
-            console.log("player-move payload", payload);
+            // console.log("player-move payload", payload);
             const updatedGrid = utils.movePlayer(direction, playerId);
             // console.log(players.playerId)
            socket.emit("update-grid", updatedGrid);
            socket.broadcast.emit("update-grid", updatedGrid);
+        })
+
+        socket.on("get-result", (players) => {
+            // console.log("players ? ---->", players);
+            const result = utils.countPoints(players);
+            socket.emit("set-result", result);
+            socket.broadcast.emit("set-result", result);
         })
 	});
 };

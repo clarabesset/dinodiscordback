@@ -182,11 +182,36 @@ module.exports = (function() {
 		return currentGrid;
 	};
 	
+	countPoints = (players) => {
+		
+		function calcPoints(player) {
+			return currentGrid.reduce((acc, cell, index) => {
+				if (cell.color === player.color) acc += 1;
+				return acc;
+			}, 0);
+		}
+
+		const results =  { // here, this represents results
+			1: calcPoints(players[0]),
+			2: calcPoints(players[1]),
+			winner: this[1] > this[2] ? 1 : 2 ,
+/* 			winnerColor: players[this.winner - 1].color
+ */		};
+
+		console.log("-----results ???----");
+		console.log(results);
+		console.log("---------");
+		// const playersCell = this.state.currentGrid.filter(cell => cell.color === player.color);
+		// var points = playersCell.length;
+		// console.log("points --->", points);
+		return results;
+	};
 	
 	
 	return {
 		generateGrid,
 		setPlayerPositionInGrid,
-		movePlayer
+		movePlayer,
+		countPoints
 	}
 }())
