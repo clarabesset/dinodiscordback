@@ -89,10 +89,10 @@ module.exports = (function() {
 	// };
 
 	movePlayer = (direction, playerId) => {
-		console.log('c ici grosse morue', direction, playerId);
+		// console.log('c ici grosse morue', direction, playerId);
 		// const currentGrid = [...sampleGrid];
 		//const currentGrid = [...grid];
-		console.log('grid length =>', currentGrid.length);
+		// console.log('grid length =>', currentGrid.length);
 		// console.log("grid backupée =========================> ");
 		// console.log(currentGrid);
 		// console.log('player ' + direction.playerId + ' moved ' + direction.direction);
@@ -100,14 +100,14 @@ module.exports = (function() {
 		const currentCell = currentGrid.filter((cell) => {
 			return cell.player && cell.player.id === playerId;
 		})[0];
-		console.log('------currentCell--------');
-		console.log(currentCell);
-		console.log('--------------');
+		// console.log('------currentCell--------');
+		// console.log(currentCell);
+		// console.log('--------------');
 
 		const takenCell = currentGrid.filter((cell) => cell.taken === true);
-		console.log('------takenCell--------');
-		console.log('takenCell length', takenCell.length);
-		console.log('--------------');
+		// console.log('------takenCell--------');
+		// console.log('takenCell length', takenCell.length);
+		// console.log('--------------');
 
 		const findNextCell = (currentCellNb, nextDirection) => {
 			const moves = {
@@ -135,7 +135,7 @@ module.exports = (function() {
 			}
 			// }
 			const nextIndex = currentCellNb + moves[nextDirection];
-			console.log('CURRENT CELL', currentCellNb);
+			// console.log('CURRENT CELL', currentCellNb);
 			return nextIndex;
 		};
 		const findPreviousCell = (currentCellNb, nextDirection) => {
@@ -157,16 +157,16 @@ module.exports = (function() {
 				// console.log('previous cell ???', previousCell);
 				return previousCell;
 			}
-			console.log('currentCellNb ???', currentCellNb);
+			// console.log('currentCellNb ???', currentCellNb);
 		};
 
 		const player = currentCell.player;
 		const nextCell = findNextCell(currentCell.nb, direction);
 		const previousCell = findPreviousCell(currentCell.nb, direction);
-		console.log('--------YATAAA ???---------------');
-		console.log('next cell', nextCell);
-		console.log('previous cell', previousCell);
-		console.log('-----------------------');
+		// console.log('--------YATAAA ???---------------');
+		// console.log('next cell', nextCell);
+		// console.log('previous cell', previousCell);
+		// console.log('-----------------------');
 
 		if (nextCell) {
 			// ----- reset current cell

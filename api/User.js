@@ -50,10 +50,12 @@ router.patch('/:id', (req, res) => {
 });
 
 router.patch('/winner/:id', (req, res) => {
-	console.log(req)
-	updateOne(req.params.id, req.body)
+	console.log(req.params.id)
+	console.log(req.body.score)
+	User.findByIdAndUpdate(req.params.id, {$inc: {score: req.body.score}})
 		.then((updatedDocument) => res.status(200).send(updatedDocument))
 		.catch((error) => {
+			console.log(error)
 			res.status(500).send('Something went wrong');
 		});
 });
